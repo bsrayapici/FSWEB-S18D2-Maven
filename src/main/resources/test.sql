@@ -167,3 +167,59 @@ INSERT INTO islem(ogrno, kitapno, atarih, vtarih)
 VALUES(8, 5, '2006-01-01 00:00:00', '2006-01-17 00:00:00');
 INSERT INTO islem(ogrno, kitapno, atarih, vtarih)
 VALUES(10, 10, '2006-01-01 00:00:00', '2006-01-17 00:00:00');
+
+-- CREATE TABLE komutları
+-- INSERT komutları (öğrenciler, yazarlar, kitaplar, işlemler)
+
+-- BURAYA KENDİ SORGULARINI EKLİYORSUN
+
+-- 1) Biyografi türünü ekle
+INSERT INTO tur (ad) VALUES ('Biyografi');
+
+-- 2) Nurettin Belek isimli yazarı ekle
+INSERT INTO yazar (ad, soyad) VALUES ('Nurettin', 'Belek');
+
+-- 3) 10B -> 10C
+UPDATE ogrenci SET sinif='10C' WHERE sinif='10B';
+
+-- 4) Kitap puanlarını 5 artır
+UPDATE kitap SET puan = puan + 5;
+
+-- 5) Adı Mehmet olan yazarları sil
+DELETE FROM yazar WHERE ad='Mehmet';
+
+-- 6) Kişisel Gelişim türü
+INSERT INTO tur (ad) VALUES ('Kişisel Gelişim');
+
+-- 7) 'Benim Üniversitelerim' kitabını Kişisel Gelişim yap
+UPDATE kitap
+SET turno = (SELECT turno FROM tur WHERE ad='Kişisel Gelişim')
+WHERE ad='Benim Üniversitelerim';
+
+8- CREATE OR REPLACE FUNCTION ogrencilistesi()
+RETURNS TABLE (
+    ogrno bigint,
+    ad varchar(45),
+    soyad varchar(45),
+    cinsiyet varchar(1),
+    sinif varchar(3),
+    puan integer,
+    dtarih varchar(20)
+)
+AS $$
+BEGIN
+RETURN QUERY
+SELECT
+    o.ogrno,
+    o.ad,
+    o.soyad,
+    o.cinsiyet,
+    o.sinif,
+    o.puan,
+    o.dtarih
+FROM ogrenci o;
+END;
+$$ LANGUAGE plpgsql;
+
+
+
